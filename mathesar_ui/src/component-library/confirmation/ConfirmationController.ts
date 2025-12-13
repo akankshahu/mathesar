@@ -29,8 +29,8 @@ const baseConfirmationProps: ConfirmationProps<unknown> = {
     label: 'Cancel',
   },
   onProceed: () => Promise.resolve(),
-  onSuccess: () => {},
-  onError: () => {},
+  onSuccess: () => { },
+  onError: () => { },
 };
 
 export class ConfirmationController {
@@ -38,7 +38,7 @@ export class ConfirmationController {
 
   confirmationProps: Writable<ConfirmationProps<unknown>>;
 
-  resolve = writable<(isConfirmed: boolean) => void>(() => {});
+  resolve = writable<(isConfirmed: boolean | null) => void>(() => { });
 
   canProceed = writable(true);
 
@@ -52,7 +52,7 @@ export class ConfirmationController {
 }
 
 interface MakeConfirm {
-  confirm: <T>(props: Partial<ConfirmationProps<T>>) => Promise<boolean>;
+  confirm: <T>(props: Partial<ConfirmationProps<T>>) => Promise<boolean | null>;
   confirmationController: ConfirmationController;
 }
 
@@ -77,7 +77,7 @@ export function makeConfirm({
         ...fullDefaultConfirmationProps,
         ...props,
       } as ConfirmationProps<unknown>;
-      return new Promise<boolean>((resolve) => {
+      return new Promise<boolean | null>((resolve) => {
         controller.resolve.set(resolve);
         controller.canProceed.set(true);
         controller.confirmationProps.set(fullProps);

@@ -51,7 +51,7 @@
     // happened, which means `deny()` we'll ultimately call `$resolve(true)`
     // and then `$resolve(false)` which may seem a bit strange. This is fine
     // because though because a Promise can only be resolved once.
-    $resolve(false);
+    $resolve(null);
     allowClose = true;
   }
 </script>

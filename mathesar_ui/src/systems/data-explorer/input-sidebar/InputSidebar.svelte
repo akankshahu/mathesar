@@ -31,7 +31,7 @@
     const allAliases = new Set($query.initial_columns.map((c) => c.alias));
     const alias = getAvailableName(baseAlias, allAliases);
     const queryHasNoSummarization = !$query.hasSummarizationTransform();
-    let addNewAutoSummarization = false;
+    let addNewAutoSummarization: boolean | null = false;
     if (
       column.producesMultipleResults &&
       $confirmationNeededForMultipleResults &&
@@ -58,6 +58,10 @@
           icon: undefined,
         },
       });
+    }
+
+    if (addNewAutoSummarization === null) {
+      return;
     }
     await queryManager.update((q) => {
       const newQuery = q.withInitialColumn({
